@@ -1,16 +1,14 @@
+using Library.Business.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Library.Web.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel(IUserService userService, ILogger<IndexModel> logger) : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+			private readonly IUserService _userService = userService;
 
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
+			private readonly ILogger<IndexModel> _logger = logger;
 
         public void OnGet()
         {

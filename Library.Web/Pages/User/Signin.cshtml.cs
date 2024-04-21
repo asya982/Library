@@ -27,7 +27,7 @@ namespace Library.Web.Pages.User
             var user = _userService.Signin(SigninModel);
 
             ClaimsIdentity identity = new();
-            identity.AddClaim(new Claim("id", user.Id.ToString()));
+            identity.AddClaim(new("id", user.Id.ToString()));
             ClaimsPrincipal principal = new(identity);
             HttpContext.User = principal;
             return Redirect("/me");

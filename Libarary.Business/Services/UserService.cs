@@ -56,13 +56,13 @@ namespace Library.Business.Services
         {
             if (user.Records.Count(r => r.Status == RecordStatus.Open) >= 5)
             {
-                throw new InvalidOperationException("Too many books");
+                throw new InvalidOperationException("Reader can only take 5 books at once");
             } else if (user.Records.Any(r => r.CreatedAt.AddMonths(1) > DateTime.Now && r.Status == RecordStatus.Open))
             {
-                throw new InvalidOperationException("Борг верни сука");
+                throw new InvalidOperationException("Untill reader returns his previous book, he can`t take a new one");
             } else  if (!book.IsAvailable)
             {
-                throw new InvalidOperationException("Підожди");
+                throw new InvalidOperationException("The book is unavailable");
             }
 
             var record = new Record()

@@ -6,20 +6,15 @@ using System.Security.Claims;
 
 namespace Library.Web.Pages.User
 {
-    public class MyProfilePageModel : PageModel
+    public class MyProfilePageModel(IUserService userService) : PageModel
     {
-        private readonly IUserService _userService;
+        private readonly IUserService _userService = userService;
 
-        public MyProfilePageModel(IUserService userService)
-        {
-            _userService = userService;
-        }
-
-        public Library.DataAccess.Models.User Me { get; set; }
+		public Library.DataAccess.Models.User Me { get; set; }
         
         public void OnGet()
         {
-            var userId = int.Parse(User.FindFirstValue("id"));
+            var userId = int.Parse(User.FindFirst("id").Value);
 
             Me = _userService.GetSingleById(userId);
         }

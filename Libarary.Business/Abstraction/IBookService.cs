@@ -14,5 +14,13 @@ namespace Library.Business.Abstraction
         ICollection<Book> GetBooksByGenre(Genre genre);
 
         ICollection<Book> GetBooksByAuthor(string author);
+
+        ICollection<Book> GetAllBooks();
+
+        Book? UpdateBook(Book book);
+
+        void DeleteBook(int id);
+
+        Book AddBook(Book book);
     }
 }
