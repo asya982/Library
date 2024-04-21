@@ -3,6 +3,7 @@ using Library.Business.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Library.Web.Pages.User
 {
@@ -15,17 +16,18 @@ namespace Library.Web.Pages.User
             _userService = userService;
         }
 
+        [BindProperty]
         public SigninModel SigninModel { get; set; } = new();
 
         public void OnGet()
         {
         }
-
-        public IActionResult OnPost(SigninModel model) 
+        public IActionResult OnPost() 
         {
-            var user = _userService.Signin(model);
+            var user = _userService.Signin(SigninModel);
+
             ClaimsIdentity identity = new();
-            identity.AddClaim(new("id", user.Id.ToString()));
+            identity.AddClaim(new Claim("id", user.Id.ToString()));
             ClaimsPrincipal principal = new(identity);
             HttpContext.User = principal;
             return Redirect("/me");

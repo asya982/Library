@@ -42,7 +42,8 @@ namespace Library.Business.Services
             {
                 Username = model.Username,
                 Password = model.Password,
-                PhoneNumber = model.PhoneNumber
+                PhoneNumber = model.PhoneNumber,
+                IsAdmin = model.IsAdmin
             };
 
             _userRepository.Add(user);

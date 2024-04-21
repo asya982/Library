@@ -13,5 +13,7 @@ namespace Library.Business.Model
         public string PhoneNumber { get; set; }
 
         public string Password { get; set; }
+
+        public bool IsAdmin { get; set; } 
     }
 }
