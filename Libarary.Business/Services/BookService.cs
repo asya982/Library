@@ -9,21 +9,16 @@ using System.Threading.Tasks;
 
 namespace Library.Business.Services
 {
-	public class BookService(IBookRepository bookRepository):IBookService
+	public class BookService(IBookRepository bookRepository) : IBookService
 	{
 		private readonly IBookRepository _bookRepository = bookRepository;
 
 		public Book AddBook(Book book)
 		{
-			var newBook = new Book()
-			{
-				Author = book.Author,
-				Name = book.Name,	
-				IsAvailable = true,
-				Genre = book.Genre,
-			};
-
-			return newBook;
+			book.IsAvailable = true;
+			_bookRepository.Add(book);
+			_bookRepository.SaveChanges();
+			return book;
 		}
 
 		public void DeleteBook(int id)
@@ -31,29 +26,41 @@ namespace Library.Business.Services
 			throw new NotImplementedException();
 		}
 
+		public Book GetSingleById(Guid id)
+		{
+			return _bookRepository.GetSingleById(id);
+		}
+
 		public ICollection<Book> GetAllBooks()
 		{
-			throw new NotImplementedException();
+			return _bookRepository.GetAll().ToList();
 		}
 
 		public ICollection<Book> GetBooksByAuthor(string author)
 		{
-			throw new NotImplementedException();
+			return _bookRepository.GetAll().Where(b => b.Author.Contains(author)).ToList();
 		}
 
 		public ICollection<Book> GetBooksByGenre(Genre genre)
 		{
-			throw new NotImplementedException();
-		}
+            return _bookRepository.GetAll().Where(b => b.Genre == genre).ToList();
+        }
 
-		public ICollection<Book> GetBooksByName(string name)
+        public ICollection<Book> GetBooksByGenre(ICollection<Genre> genres)
+        {
+            return _bookRepository.GetAll().Where(b => genres.Contains(b.Genre)).ToList();
+        }
+
+        public ICollection<Book> GetBooksByName(string name)
 		{
-			throw new NotImplementedException();
+			return _bookRepository.GetAll().Where(b => b.Name.Contains(name)).ToList();
 		}
 
 		public Book? UpdateBook(Book book)
 		{
-			throw new NotImplementedException();
+			_bookRepository.Update(book);
+			_bookRepository.SaveChanges();
+			return book;
 		}
 	}
 }

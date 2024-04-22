@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace Library.DataAccess.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string PhoneNumber { get; set; }
+        public string FirstName { get; set; }
 
-        public string Password { get; set; }
-        public bool IsAdmin { get; set; }
+        public string LastName { get; set; }
 
         // Navigation property for Records
-        public ICollection<Record> Records { get; set; }
+        public ICollection<Record> Records { get; set; } = new List<Record>();
     }
 }

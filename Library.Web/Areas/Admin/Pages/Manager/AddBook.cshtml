@@ -1,0 +1,28 @@
+﻿@page
+@model Library.Web.Areas.Admin.BooksModel
+@{
+    Layout = "/Areas/Admin/Pages/Manager/_Layout.cshtml";
+}
+
+<h3>@ViewData["Title"]</h3>
+<div class="container justify-content-center" style="display: flex">
+    <div class="col-md-6">
+        <form id="add-book-form" method="post">
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Name" class="form-control" placeholder="Enter book title" />
+                <label asp-for="Input.Name" class="form-label"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Author" class="form-control" placeholder="Enter author name" />
+                <label asp-for="Input.Author" class="form-label"></label>
+                <span asp-validation-for="Input.Author" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select class="form-select" asp-for="Input.GenreId" asp-items="Model.GenresSelectList">
+                    <option value="">Genre</option>
+                </select>
+            </div>
+            <button id="add-book-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+</div>

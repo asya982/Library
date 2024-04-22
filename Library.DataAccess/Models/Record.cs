@@ -8,9 +8,9 @@
 
     public class Record
     {
-        public int Id { get; set; }
-        public int UserId { get; set; } // Foreign key to User
-        public int BookId { get; set; } // Foreign key to Book
+        public Guid Id { get; set; }
+        public string UserId { get; set; } // Foreign key to User
+        public Guid BookId { get; set; } // Foreign key to Book
         public RecordStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
 

@@ -9,9 +9,13 @@ namespace Library.Business.Abstraction
 {
     public interface IBookService
     {
+        Book GetSingleById(Guid id);
+
         ICollection<Book> GetBooksByName(string name);
 
         ICollection<Book> GetBooksByGenre(Genre genre);
+
+        ICollection<Book> GetBooksByGenre(ICollection<Genre> genres);
 
         ICollection<Book> GetBooksByAuthor(string author);
 

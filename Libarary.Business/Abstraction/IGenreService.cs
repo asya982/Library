@@ -10,5 +10,7 @@ namespace Library.Business.Abstraction
 	public interface IGenreService
 	{
 		ICollection<Genre> GetGenres();
+
+		Genre GetSingleById(Guid id);
 	}
 }

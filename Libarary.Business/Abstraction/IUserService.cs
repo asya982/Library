@@ -10,7 +10,7 @@ namespace Library.Business.Abstraction
 {
     public interface IUserService
     {
-        User GetSingleById(int id);
+        User GetSingleById(Guid id);
 
         User Signin(SigninModel model);
 

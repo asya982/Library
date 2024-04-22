@@ -16,7 +16,7 @@ namespace Library.Business.Services
         private readonly IRecordRepository _recordRepository = recordRepository;
         private readonly IBookRepository _bookRepository = bookRepository;
 
-        public User GetSingleById(int id)
+        public User GetSingleById(Guid id)
         {
             return _userRepository.GetSingleById(id);
         }
@@ -28,10 +28,10 @@ namespace Library.Business.Services
             if (user == null) 
             {
                 return null;
-            } else if (user.Password != model.Password)
-            {
-                return null;
-            }
+            }// else if (user.Password != model.Password)
+            //{
+            //    return null;
+            //}
 
             return user;
         }
@@ -40,10 +40,9 @@ namespace Library.Business.Services
         {
             var user = new User()
             {
-                Username = model.Username,
-                Password = model.Password,
+                UserName = model.Username,
+                PasswordHash = model.Password,
                 PhoneNumber = model.PhoneNumber,
-                IsAdmin = model.IsAdmin
             };
 
             _userRepository.Add(user);
@@ -67,6 +66,7 @@ namespace Library.Business.Services
 
             var record = new Record()
             {
+                Id = Guid.NewGuid(),
                 BookId = book.Id,
                 Status = RecordStatus.Open,
                 UserId = user.Id,

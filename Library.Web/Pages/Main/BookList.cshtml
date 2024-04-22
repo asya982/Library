@@ -1,16 +1,60 @@
-﻿@page "/book-list"
+﻿@page "/books"
+@using Library.DataAccess.Models
 @model Library.Web.Pages.Main.BookListPageModel
+@inject SignInManager<User> signinManager
 @{
 }
 
 <div class="container">
-	<h1>Pick a book from a list or find one</h1>
-	<div>
-		<select class="form-select" aria-label="Default select example">
-			<option selected>Genres</option>
-			<option value="1">One</option>
-			<option value="2">Two</option>
-			<option value="3">Three</option>
-		</select>
-	</div>
+    <h1>Pick a book from a list or find one</h1>
+    <div>
+        <form class="flex-row justify-content-evenly" style="display: flex">
+            <div class="col-sm-1">
+                <select class="form-select" asp-for="MovieGenreId" asp-items="Model.GenresSelectList">
+                    <option value="">Genre</option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <input class="form-control" type="text" asp-for="SearchString" placeholder="Title" />
+            </div>
+            <div class="col-sm-2">
+                <input class="btn btn-outline-primary" type="submit" value="Search" />
+            </div>
+        </form>
+
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Is available</th>
+                    <th>Take book</th>
+                </tr>
+                @foreach (var item in Model.Books)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Author
+                        </td>
+                        <td>
+                            @item.Genre.Name
+                        </td>
+                        <td>
+                            @(item.IsAvailable ? "Yes" : "No")
+                        </td>
+                        <td>
+                            <form asp-page-handler="TakeBook" method="post">
+                                <button class="btn btn-outline-info" disabled="@(!item.IsAvailable || !signinManager.IsSignedIn(User))">@(item.IsAvailable ? "Take" : "Taken")</button>
+                                <input type="hidden" name="bookId" value="@item.Id" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
 </div>

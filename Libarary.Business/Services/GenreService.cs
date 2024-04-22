@@ -9,12 +9,17 @@ using System.Threading.Tasks;
 
 namespace Library.Business.Services
 {
-	internal class GenreService(IGenreRepository genreRepository) : IGenreService
+	public class GenreService(IGenreRepository genreRepository) : IGenreService
 	{
 		private readonly IGenreRepository _genreRepository = genreRepository;
 		public ICollection<Genre> GetGenres()
 		{
-			return (ICollection<Genre>)_genreRepository.GetAll();
+			return _genreRepository.GetAll().ToList();
 		}
-	}
+
+        public Genre GetSingleById(Guid id)
+        {
+            return _genreRepository.GetSingleById(id);
+        }
+    }
 }

@@ -28,7 +28,7 @@ namespace Library.DataAccess.Repositories
             return _context.Records.AsNoTracking();
         }
 
-        public Record GetSingleById(int id)
+        public Record GetSingleById(Guid id)
         {
             return _context.Records.AsNoTracking().Single(r => r.Id == id);
         }

@@ -1,0 +1,26 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Pages/Shared/_Layout.cshtml";
+    }
+}
+
+<h1>Admin</h1>
+
+<div>
+    <h2>Manage application database</h2>
+    <hr />
+    <div class="container-lg">
+        <div class="col-sm">
+            <partial name="_AdminNav" />
+        </div>
+        <div class="col-lg">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+

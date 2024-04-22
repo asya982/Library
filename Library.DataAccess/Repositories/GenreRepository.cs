@@ -27,7 +27,7 @@ namespace Library.DataAccess.Repositories
             return _context.Genres.AsNoTracking();
         }
 
-        public Genre GetSingleById(int id)
+        public Genre GetSingleById(Guid id)
         {
             return _context.Genres.AsNoTracking().Single(g => g.Id == id);
         }

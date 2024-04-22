@@ -28,14 +28,14 @@ namespace Library.DataAccess.Repositories
             return _context.Users.AsNoTracking();
         }
 
-        public User GetSingleById(int id)
+        public User GetSingleById(Guid id)
         {
-            return _context.Users.AsNoTracking().Single(u => u.Id == id);
+            return _context.Users.Include(u => u.Records).AsNoTracking().Single(u => u.Id == id.ToString());
         }
 
         public User GetSingleByUsername(string username) 
         {
-            return _context.Users.AsNoTracking().Single(u => u.Username == username);
+            return _context.Users.Include(u => u.Records).AsNoTracking().Single(u => u.UserName == username);
         }
 
         public void Update(User entity)

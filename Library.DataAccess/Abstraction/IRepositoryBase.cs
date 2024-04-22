@@ -8,7 +8,7 @@ namespace Library.DataAccess.Abstraction
 {
     public interface IRepositoryBase<T> where T : class
     {
-        T GetSingleById(int id);
+        T GetSingleById(Guid id);
 
         IEnumerable<T> GetAll();
 
