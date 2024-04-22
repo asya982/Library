@@ -19,6 +19,10 @@ namespace Library.Business.Abstraction
 
         ICollection<Book> GetBooksByAuthor(string author);
 
+        ICollection<Book> GetBooksTakenByUser(Guid userId);
+
+        ICollection<Book> GetTaken();
+
         ICollection<Book> GetAllBooks();
 
         Book? UpdateBook(Book book);

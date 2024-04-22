@@ -9,5 +9,8 @@ namespace Library.DataAccess.Abstraction
 {
     public interface IRecordRepository : IRepositoryBase<Record>
     {
+        ICollection<Record> GetByUserId(Guid id);
+
+        ICollection<Record> GetByBookId(Guid bookId);
     }
 }

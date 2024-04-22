@@ -7,12 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Library.Web.Pages.Main
 {
-    public class BookListPageModel(IGenreService genreService, IBookService bookService, IUserService userService, UserManager<User> userManager) : PageModel
+    public class BookListPageModel : PageModel
     {
-        private readonly IGenreService _genreService = genreService;
-        private readonly IBookService _bookService = bookService;
-        private readonly IUserService _userService = userService;
-        private readonly UserManager<User> _userManager = userManager;
+        private readonly IGenreService _genreService;
+        private readonly IBookService _bookService;
+        private readonly IUserService _userService;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+
+        public BookListPageModel(IGenreService genreService, IBookService bookService, IUserService userService, UserManager<User> userManager, SignInManager<User> signInManager)
+        {
+            _genreService = genreService;
+            _bookService = bookService;
+            _userService = userService;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            this.Books = _bookService.GetAllBooks();
+            this.GenresSelectList = new(_genreService.GetGenres(), nameof(Genre.Name), nameof(Genre.Name));
+        }
 
         [BindProperty(SupportsGet = true)]
         public string? SearchString { get; set; }
@@ -20,14 +32,15 @@ namespace Library.Web.Pages.Main
         public SelectList GenresSelectList { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public string? MovieGenreId { get; set; }
+        public string? GenreName { get; set; }
 
-        public ICollection<Book> Books { get; set; } = new List<Book>();
+        public ICollection<Book> Books { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string? Error { get; set; }
 
         public void OnGet()
         {
-            GenresSelectList = new(_genreService.GetGenres(), nameof(Genre.Id), nameof(Genre.Name));
-
             if (!string.IsNullOrEmpty(SearchString))
             {
                 Books = _bookService.GetBooksByName(SearchString);
@@ -37,10 +50,10 @@ namespace Library.Web.Pages.Main
                 Books = _bookService.GetAllBooks();
             }
 
-            if (MovieGenreId != null)
+            if (GenreName != null)
             {
-                var genre = _genreService.GetGenres().SingleOrDefault(g => g.Id.ToString() == MovieGenreId);
-                Books = Books.Where(b => b.Genre == genre).ToList();
+                var genre = _genreService.GetGenres().Single(g => g.Name == GenreName);
+                Books = Books.Where(b => b.Genre.Name == genre.Name).ToList();
             }
         }
 
@@ -48,16 +61,27 @@ namespace Library.Web.Pages.Main
         {
             var book = _bookService.GetSingleById(Guid.Parse(bookId));
 
-            var user = await _userManager.GetUserAsync(User);
+            var userId = (await _userManager.GetUserAsync(User)).Id;
 
-
-            if (!book.IsAvailable || user == null)
+            if (!book.IsAvailable || !_signInManager.IsSignedIn(User))
             {
-                return Page();
+                return RedirectToPage("/Main/BookList");
             }
 
-            _userService.TakeBook(user, book);
-            return Page();
+            try
+            {
+                _userService.TakeBook(Guid.Parse(userId), book);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Error = ex.Message;
+            }
+            return RedirectToPage($"/Main/BookList", new { error = Error });
+        }
+
+        public IActionResult OnPostClearFilter()
+        {
+            return RedirectToPage("./BookList");
         }
     }
 }

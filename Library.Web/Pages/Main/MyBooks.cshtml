@@ -1,4 +1,39 @@
 ﻿@page "/books/my"
+@using Library.DataAccess.Models
 @model Library.Web.Pages.Main.MyBooksModel
+@inject SignInManager<User> signinManager
 @{
 }
+
+<div class="container">
+    <h1>My books</h1>
+    <div>
+        <div class="row">
+            <table class="table">
+                <tr>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Due to</th>
+                </tr>
+                @foreach (var item in Model.MyBooks)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Author
+                        </td>
+                        <td>
+                            @item.Genre.Name
+                        </td>
+                        <td>
+                            @item.Records.Single(r => r.Status == RecordStatus.Open).CreatedAt.AddMonths(1).ToString("dd-MM-yyyy")
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

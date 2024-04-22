@@ -1,0 +1,13 @@
+﻿@page
+@model Library.Web.Areas.Identity.Pages.Account.Manage.BecomeAdminModel
+@{
+    Layout = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
+}
+
+<div>
+    <form method="post">
+        <button class="btn btn-outline-danger" type="submit" disabled=@(User.IsInRole("Admin"))>
+            @(User.IsInRole("Admin") ? "You are already admin" : "Become admin")
+        </button>
+    </form>
+</div>

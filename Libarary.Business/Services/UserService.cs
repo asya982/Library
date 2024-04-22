@@ -36,6 +36,21 @@ namespace Library.Business.Services
             return user;
         }
 
+        public void ReturnBook(Book book)
+        {
+            var record = book.Records.SingleOrDefault(r => r.Status == RecordStatus.Open);
+
+            if(record == null) 
+            {
+                return;
+            }
+
+            record.Status = RecordStatus.Closed;
+            book.IsAvailable = true;
+            _bookRepository.Update(book);
+            _bookRepository.SaveChanges();
+        }
+
         public User Signin(SigninModel model)
         {
             var user = new User()
@@ -51,12 +66,14 @@ namespace Library.Business.Services
             return user;
         }
 
-        public void TakeBook(User user, Book book)
+        public void TakeBook(Guid userId, Book book)
         {
-            if (user.Records.Count(r => r.Status == RecordStatus.Open) >= 5)
+            var records = _recordRepository.GetByUserId(userId);
+
+            if (records.Count(r => r.Status == RecordStatus.Open) >= 5)
             {
                 throw new InvalidOperationException("Reader can only take 5 books at once");
-            } else if (user.Records.Any(r => r.CreatedAt.AddMonths(1) > DateTime.Now && r.Status == RecordStatus.Open))
+            } else if (records.Any(r => r.CreatedAt.AddMonths(1) < DateTime.Now && r.Status == RecordStatus.Open))
             {
                 throw new InvalidOperationException("Untill reader returns his previous book, he can`t take a new one");
             } else  if (!book.IsAvailable)
@@ -69,7 +86,7 @@ namespace Library.Business.Services
                 Id = Guid.NewGuid(),
                 BookId = book.Id,
                 Status = RecordStatus.Open,
-                UserId = user.Id,
+                UserId = userId.ToString(),
                 CreatedAt = DateTime.Now
             };
             book.IsAvailable = false;

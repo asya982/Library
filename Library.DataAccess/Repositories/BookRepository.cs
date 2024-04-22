@@ -25,12 +25,12 @@ namespace Library.DataAccess.Repositories
 
         public IEnumerable<Book> GetAll()
         {
-            return _context.Books.Include(b => b.Genre).Include(b => b.Records).AsNoTracking();
+            return _context.Books.Include(b => b.Genre).AsNoTracking();
         }
 
         public Book GetSingleById(Guid id)
         {
-            return _context.Books.Include(b => b.Genre).Include(b => b.Records).AsNoTracking().Single(b => b.Id == id);
+            return _context.Books.Include(b => b.Genre).AsNoTracking().Include(b => b.Records).AsNoTracking().Single(b => b.Id == id);
         }
 
         public void Update(Book entity)

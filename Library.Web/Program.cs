@@ -6,26 +6,11 @@ using Library.DataAccess.Repositories;
 using Library.DataAccess.Models;
 using Library.Business.Abstraction;
 using Library.Business.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("SqlServer");
-
-//builder.Services.AddAuthentication(
-//    options => 
-//    {
-//        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//        options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//    })
-//    .AddCookie(options =>
-//    {
-//        options.Cookie.SameSite = SameSiteMode.None;
-//        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-//        options.AccessDeniedPath = "/Error/403";
-//    });
 
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -56,7 +41,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     // Cookie settings
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 
     options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";

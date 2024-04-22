@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Library.Business.Services
 {
-	public class BookService(IBookRepository bookRepository) : IBookService
+	public class BookService(IBookRepository bookRepository, IRecordRepository recordRepository) : IBookService
 	{
 		private readonly IBookRepository _bookRepository = bookRepository;
+        private readonly IRecordRepository _recordRepository = recordRepository;
 
-		public Book AddBook(Book book)
+        public Book AddBook(Book book)
 		{
 			book.IsAvailable = true;
 			_bookRepository.Add(book);
@@ -62,5 +63,31 @@ namespace Library.Business.Services
 			_bookRepository.SaveChanges();
 			return book;
 		}
-	}
+
+        public ICollection<Book> GetBooksTakenByUser(Guid userId)
+        {
+			var records = _recordRepository.GetByUserId(userId).Where(r => r.Status == RecordStatus.Open).ToList();
+			var books = new List<Book>();
+
+			foreach (var record in records)
+			{
+				books.Add(_bookRepository.GetSingleById(record.BookId));
+			}
+
+			return books;
+        }
+
+		public ICollection<Book> GetTaken()
+		{
+			var records = _recordRepository.GetAll().Where(r => r.Status == RecordStatus.Open).ToList();
+			var books = new List<Book>();
+
+			foreach(var  record in records) 
+			{
+                books.Add(_bookRepository.GetSingleById(record.BookId));
+            }
+
+			return books;
+		}
+    }
 }

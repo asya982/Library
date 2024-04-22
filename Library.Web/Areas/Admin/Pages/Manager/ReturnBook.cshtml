@@ -1,0 +1,44 @@
+﻿@page
+@using Library.Business.Abstraction
+@using Library.DataAccess.Models
+@model Library.Web.Areas.Admin.Pages.Manager.ReturnBookModel
+@inject SignInManager<User> signinManager;
+@inject IUserService userService;
+@{
+    Layout = "/Areas/Admin/Pages/Manager/_Layout.cshtml";
+}
+
+<div class="row">
+    <table class="table">
+        <tr>
+            <th>Book Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Taken by</th>
+            <th>Return book</th>
+        </tr>
+        @foreach (var item in Model.TakenBooks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre.Name)
+                </td>
+                <td>
+                    @(userService.GetSingleById(Guid.Parse(item.Records.Single(r => r.Status == RecordStatus.Open).UserId)).UserName)
+                </td>
+                <td>
+                    <form method="post">
+                        <button class="btn btn-outline-danger" disabled="@(!User.IsInRole("Admin"))">Return book</button>
+                        <input type="hidden" name="bookId" value="@item.Id" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

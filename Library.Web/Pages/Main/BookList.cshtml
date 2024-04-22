@@ -7,10 +7,14 @@
 
 <div class="container">
     <h1>Pick a book from a list or find one</h1>
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <span class="alert-danger">@Model.Error</span>
+    }
     <div>
         <form class="flex-row justify-content-evenly" style="display: flex">
             <div class="col-sm-1">
-                <select class="form-select" asp-for="MovieGenreId" asp-items="Model.GenresSelectList">
+                <select class="form-select" asp-for="GenreName" asp-items="Model.GenresSelectList">
                     <option value="">Genre</option>
                 </select>
             </div>
@@ -21,7 +25,9 @@
                 <input class="btn btn-outline-primary" type="submit" value="Search" />
             </div>
         </form>
-
+        <form asp-page-handler="ClearFilter" method="post">
+            <button class="btn btn-outline-info">Clear</button>
+        </form>
         <div class="row">
             <table class="table">
                 <tr>
@@ -35,13 +41,13 @@
                 {
                     <tr>
                         <td>
-                            @item.Name
+                            @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @item.Author
+                            @Html.DisplayFor(modelItem => item.Author)
                         </td>
                         <td>
-                            @item.Genre.Name
+                            @Html.DisplayFor(modelItem => item.Genre.Name)
                         </td>
                         <td>
                             @(item.IsAvailable ? "Yes" : "No")

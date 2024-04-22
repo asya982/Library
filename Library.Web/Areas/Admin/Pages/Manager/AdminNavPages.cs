@@ -8,9 +8,13 @@ namespace Library.Web.Areas.Admin
 
         public static string ManageUserRoles { get; set; } = "ManageUserRoles";
 
+        public static string ReturnBook { get; set; } = "ReturnBook";
+
         public static string AddBookNavClass(ViewContext viewContext) => PageNavClass(viewContext, AddBook);
 
         public static string ManageUserRolesNavClass(ViewContext viewContext) => PageNavClass(viewContext, ManageUserRoles);
+
+        public static string ReturnBookNavClass(ViewContext viewContext) => PageNavClass(viewContext, ReturnBook);
 
         public static string PageNavClass(ViewContext viewContext, string page)
         {

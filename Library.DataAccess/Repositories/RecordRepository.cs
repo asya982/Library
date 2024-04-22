@@ -33,6 +33,16 @@ namespace Library.DataAccess.Repositories
             return _context.Records.AsNoTracking().Single(r => r.Id == id);
         }
 
+        public ICollection<Record> GetByUserId(Guid id)
+        {
+            return _context.Records.AsNoTracking().Where(r => r.UserId == id.ToString()).ToList();
+        }
+
+        public ICollection<Record> GetByBookId(Guid bookId) 
+        {
+            return _context.Records.AsNoTracking().Where(r => r.BookId == bookId).ToList();
+        }
+
         public void Update(Record entity)
         {
             _context.Update(entity);

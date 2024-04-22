@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Library.Web.Areas.Admin
 {
-    public class IndexModel : PageModel
+    public class ManageUserRolesModel : PageModel
     {
         public void OnGet()
         {

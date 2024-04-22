@@ -16,6 +16,8 @@ namespace Library.Business.Abstraction
 
         User? Login(LoginModel model);
 
-        void TakeBook(User user, Book book);
+        void TakeBook(Guid userId, Book book);
+
+        void ReturnBook(Book book);
     }
 }
