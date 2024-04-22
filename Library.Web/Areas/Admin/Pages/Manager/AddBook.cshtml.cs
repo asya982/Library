@@ -34,7 +34,7 @@ namespace Library.Web.Areas.Admin
             GenresSelectList = new(_genreService.GetGenres(), nameof(Genre.Id), nameof(Genre.Name));
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
             var genre = _genreService.GetGenres().Single(g => g.Id.ToString() == Input.GenreId);
             var book = new Book()
@@ -47,6 +47,7 @@ namespace Library.Web.Areas.Admin
             };
 
             _bookService.AddBook(book);
+            return RedirectToPage("./AddBook");
         }
     }
 }
