@@ -1,12 +1,10 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
     Layout = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
 }
 
-<h3>@ViewData["Title"]</h3>
 <div class="container justify-content-center" style="display: flex">
     <div class="col-md-6">
         <form id="profile-form" method="post">

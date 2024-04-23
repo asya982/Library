@@ -10,9 +10,13 @@ namespace Library.Web.Pages
 
 			private readonly ILogger<IndexModel> _logger = logger;
 
-        public void OnGet()
+        public IActionResult  OnGet()
         {
-
+           if(User.Identity?.Name != null)
+            {
+                return Redirect("/books");
+            }
+            return Page();
         }
     }
 }

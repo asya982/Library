@@ -6,61 +6,63 @@
 }
 
 <div class="container">
-    <h1>Pick a book from a list or find one</h1>
-    @if (!string.IsNullOrEmpty(Model.Error))
-    {
-        <span class="alert-danger">@Model.Error</span>
-    }
-    <div>
-        <form class="flex-row justify-content-evenly" style="display: flex">
-            <div class="col-sm-1">
-                <select class="form-select" asp-for="GenreName" asp-items="Model.GenresSelectList">
-                    <option value="">Genre</option>
-                </select>
-            </div>
-            <div class="col-sm-6">
-                <input class="form-control" type="text" asp-for="SearchString" placeholder="Title" />
-            </div>
-            <div class="col-sm-2">
-                <input class="btn btn-outline-primary" type="submit" value="Search" />
-            </div>
-        </form>
-        <form asp-page-handler="ClearFilter" method="post">
-            <button class="btn btn-outline-info">Clear</button>
-        </form>
-        <div class="row">
-            <table class="table">
-                <tr>
-                    <th>Book Title</th>
-                    <th>Author</th>
-                    <th>Genre</th>
-                    <th>Is available</th>
-                    <th>Take book</th>
-                </tr>
-                @foreach (var item in Model.Books)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Author)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Genre.Name)
-                        </td>
-                        <td>
-                            @(item.IsAvailable ? "Yes" : "No")
-                        </td>
-                        <td>
-                            <form asp-page-handler="TakeBook" method="post">
-                                <button class="btn btn-outline-info" disabled="@(!item.IsAvailable || !signinManager.IsSignedIn(User))">@(item.IsAvailable ? "Take" : "Taken")</button>
-                                <input type="hidden" name="bookId" value="@item.Id" />
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </table>
-        </div>
-    </div>
+	<h1 class="text-center">Pick a book from a list or find one</h1>
+	@if (!string.IsNullOrEmpty(Model.Error))
+	{
+		<span class="alert-danger">@Model.Error</span>
+	}
+	<div>
+		<div class="d-flex justify-content-evenly my-4">
+			<form class="d-flex justify-content-evenly flex-grow-1">
+				<div>
+					<select class="form-select" asp-for="GenreName" asp-items="Model.GenresSelectList">
+						<option value="">Genre</option>
+					</select>
+				</div>
+				<div >
+					<input class="form-control" type="text" asp-for="SearchString" placeholder="Enter book name..." />
+				</div>
+				<div>
+					<input class="btn btn-outline-primary" type="submit" value="Search" />
+				</div>
+			</form>
+			<form asp-page-handler="ClearFilter" method="post">
+				<button class="btn btn-outline-info">Clear</button>
+			</form>
+		</div>
+		<div class="row">
+			<table class="table">
+				<tr>
+					<th>Book Title</th>
+					<th>Author</th>
+					<th>Genre</th>
+					<th>Is available</th>
+					<th>Take book</th>
+				</tr>
+				@foreach (var item in Model.Books)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.Name)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Author)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Genre.Name)
+						</td>
+						<td>
+							@(item.IsAvailable ? "Yes" : "No")
+						</td>
+						<td>
+							<form asp-page-handler="TakeBook" method="post">
+								<button class="btn btn-outline-info" disabled="@(!item.IsAvailable || !signinManager.IsSignedIn(User))">@(item.IsAvailable ? "Take" : "Taken")</button>
+								<input type="hidden" name="bookId" value="@item.Id" />
+							</form>
+						</td>
+					</tr>
+				}
+			</table>
+		</div>
+	</div>
 </div>
